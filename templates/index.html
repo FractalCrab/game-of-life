@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conway's Game of Life</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/htmx/1.9.10/htmx.min.js"></script>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Conway's Game of Life</h1>
+        
+        <div class="game-info">
+            <div class="generation-counter">
+                Generation: <span id="generation-count">{{.Generation}}</span>
+            </div>
+            <div>
+                Auto-play: <span class="auto-play-indicator" id="auto-play-indicator"></span>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-primary" 
+                    hx-get="/next" 
+                    hx-target="#grid" 
+                    hx-swap="innerHTML">
+                Next Generation
+            </button>
+            
+            <button class="btn btn-success" 
+                    id="auto-play-btn"
+                    hx-get="/toggle-auto-play" 
+                    hx-target="#auto-play-container"
+                    hx-swap="outerHTML">
+                Start Auto-play
+            </button>
+            
+            <button class="btn btn-warning" 
+                    hx-get="/random" 
+                    hx-target="#grid" 
+                    hx-swap="innerHTML">
+                Random Fill
+            </button>
+            
+            <button class="btn btn-danger" 
+                    hx-get="/clear" 
+                    hx-target="#grid" 
+                    hx-swap="innerHTML">
+                Clear Grid
+            </button>
+        </div>
+
+        <div id="auto-play-container">
+
+        </div>
+
+        <div class="speed-control">
+            <label for="speed-slider">Speed:</label>
+            <input type="range" id="speed-slider" min="100" max="2000" value="500" step="100">
+            <span id="speed-display">500ms</span>
+        </div>
+
+        <div class="game-container">
+            <div id="grid" hx-target="this" >
+                {{range $y, $row := .State}}
+                    {{range $x, $cell := $row}}
+                        <div class="cell {{if $cell}}alive{{end}}" 
+                             hx-post="/toggle" 
+                             hx-vals='{"x":{{$x}}, "y":{{$y}}}'
+                             hx-target="#grid"
+                             hx-swap="innerHTML">
+                        </div>
+                    {{end}}
+                {{end}}
+            </div>
+        </div>
+
+        <div class="patterns">
+            <h3>Classic Patterns</h3>
+            <div class="pattern-buttons">
+                <button class="btn-pattern" 
+                        hx-post="/pattern/glider" 
+                        hx-target="#grid" 
+                        hx-swap="innerHTML">
+                    Glider
+                </button>
+                <button class="btn-pattern" 
+                        hx-post="/pattern/blinker" 
+                        hx-target="#grid" 
+                        hx-swap="innerHTML">
+                    Blinker
+                </button>
+                <button class="btn-pattern" 
+                        hx-post="/pattern/block" 
+                        hx-target="#grid" 
+                        hx-swap="innerHTML">
+                    Block
+                </button>
+                <button class="btn-pattern" 
+                        hx-post="/pattern/beacon" 
+                        hx-target="#grid" 
+                        hx-swap="innerHTML">
+                    Beacon
+                </button>
+                <button class="btn-pattern" 
+                        hx-post="/pattern/toad" 
+                        hx-target="#grid" 
+                        hx-swap="innerHTML">
+                    Toad
+                </button>
+            </div>
+        </div>
+
+        
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
