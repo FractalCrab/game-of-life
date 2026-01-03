@@ -1,5 +1,5 @@
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 20px;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -141,6 +141,8 @@ h1 {
     transition: all 0.15s ease;
     border-radius: 2px;
     background: #ecf0f1;
+    transition: background-color 0.12s linear;
+    will-change: background-color;
 }
 
 .cell:hover {
@@ -235,9 +237,15 @@ h1 {
 }
 
 @keyframes pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.5; }
-    100% { opacity: 1; }
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 .speed-control {
@@ -261,22 +269,22 @@ h1 {
     .container {
         padding: 20px;
     }
-    
+
     #grid {
         grid-template-columns: repeat(25, 14px);
         grid-template-rows: repeat(20, 14px);
     }
-    
+
     .cell {
         width: 14px;
         height: 14px;
     }
-    
+
     .controls {
         flex-direction: column;
         align-items: center;
     }
-    
+
     .btn {
         min-width: 200px;
     }
