@@ -4,72 +4,49 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Conway's Game of Life</title>
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/htmx/1.9.10/htmx.min.js"></script>
-        <!-- Morph swap extension to avoid full DOM rebuild flicker -->
-        <script src="https://unpkg.com/htmx.org/dist/ext/morphdom-swap.js"></script>
-
-        <link rel="stylesheet" href="/static/style.css" />
+        <link rel="stylesheet" href="static/style.css" />
     </head>
 
     <body>
-        <div class="container">
+        <main class="container">
             <h1>Conway's Game of Life</h1>
 
-            <div class="game-info">
+            <section class="game-info" aria-label="Game status">
                 <div class="generation-counter">
                     Generation:
-                    <span id="generation-count">{{.Generation}}</span>
+                    <span id="generation-count">0</span>
                 </div>
                 <div>
                     Auto-play:
                     <span
                         class="auto-play-indicator"
                         id="auto-play-indicator"
+                        aria-hidden="true"
                     ></span>
                 </div>
-            </div>
+            </section>
 
             <div class="controls">
-                <button
-                    class="btn btn-primary"
-                    hx-get="/next"
-                    hx-target="#grid"
-                    hx-swap="morphdom"
-                >
+                <button class="btn btn-primary" id="next-btn" type="button">
                     Next Generation
                 </button>
 
                 <button
                     class="btn btn-success"
                     id="auto-play-btn"
-                    hx-get="/toggle-auto-play"
-                    hx-target="#auto-play-container"
-                    hx-swap="outerHTML"
+                    type="button"
                 >
                     Start Auto-play
                 </button>
 
-                <button
-                    class="btn btn-warning"
-                    hx-get="/random"
-                    hx-target="#grid"
-                    hx-swap="morphdom"
-                >
+                <button class="btn btn-warning" id="random-btn" type="button">
                     Random Fill
                 </button>
 
-                <button
-                    class="btn btn-danger"
-                    hx-get="/clear"
-                    hx-target="#grid"
-                    hx-swap="morphdom"
-                >
+                <button class="btn btn-danger" id="clear-btn" type="button">
                     Clear Grid
                 </button>
             </div>
-
-            <div id="auto-play-container"></div>
 
             <div class="speed-control">
                 <label for="speed-slider">Speed:</label>
@@ -85,68 +62,55 @@
             </div>
 
             <div class="game-container">
-                <!-- Enable morphdom extension for this subtree -->
-                <div id="grid" hx-ext="morphdom-swap">
-                    {{range $y, $row := .State}} {{range $x, $cell := $row}}
-                    <div
-                        id="cell-{{$x}}-{{$y}}"
-                        class="cell {{if $cell}}alive{{end}}"
-                        hx-post="/toggle"
-                        hx-vals='{"x":{{$x}}, "y":{{$y}}}'
-                        hx-target="this"
-                        hx-swap="outerHTML"
-                    ></div>
-                    {{end}} {{end}}
-                </div>
+                <div
+                    id="grid"
+                    aria-label="Game of Life grid"
+                    role="group"
+                ></div>
             </div>
 
-            <div class="patterns">
-                <h3>Classic Patterns</h3>
+            <section class="patterns">
+                <h2>Classic Patterns</h2>
                 <div class="pattern-buttons">
                     <button
                         class="btn-pattern"
-                        hx-post="/pattern/glider"
-                        hx-target="#grid"
-                        hx-swap="morphdom"
+                        data-pattern="glider"
+                        type="button"
                     >
                         Glider
                     </button>
                     <button
                         class="btn-pattern"
-                        hx-post="/pattern/blinker"
-                        hx-target="#grid"
-                        hx-swap="morphdom"
+                        data-pattern="blinker"
+                        type="button"
                     >
                         Blinker
                     </button>
                     <button
                         class="btn-pattern"
-                        hx-post="/pattern/block"
-                        hx-target="#grid"
-                        hx-swap="morphdom"
+                        data-pattern="block"
+                        type="button"
                     >
                         Block
                     </button>
                     <button
                         class="btn-pattern"
-                        hx-post="/pattern/beacon"
-                        hx-target="#grid"
-                        hx-swap="morphdom"
+                        data-pattern="beacon"
+                        type="button"
                     >
                         Beacon
                     </button>
                     <button
                         class="btn-pattern"
-                        hx-post="/pattern/toad"
-                        hx-target="#grid"
-                        hx-swap="morphdom"
+                        data-pattern="toad"
+                        type="button"
                     >
                         Toad
                     </button>
                 </div>
-            </div>
-        </div>
+            </section>
+        </main>
 
-        <script src="/static/script.js"></script>
+        <script src="static/script.js"></script>
     </body>
 </html>

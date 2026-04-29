@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"html/template"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -25,7 +26,7 @@ func main() {
 	http.HandleFunc("/pattern/", handlePattern)
 
 	fmt.Println("Server starting on http://localhost:8080")
-	http.ListenAndServe(":8080", nil)
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
 func seedDefaultGlider() {
